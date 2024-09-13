@@ -9,7 +9,7 @@
   },
   "keywords": ["WebRTC", "socket.io", "video-chat", "webcam", "real-time-chat", "peer-to-peer"],
   "author": "Steven Rugg",
-  "license": "ISC",
+  "license": "MIT",
   "description": "WebRTC implementation of text and video chat application using socket.io as the signaling channel.",
   "dependencies": {
     "bcrypt": "^5.1.1",
