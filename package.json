@@ -1,16 +1,16 @@
 {
-  "name": "chat",
-  "version": "1.0.0",
+  "name": "webrtcvideochat",
+  "version": "2.4.1",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["WebRTC", "socket.io", "video-chat", "webcam", "real-time-chat", "peer-to-peer"],
+  "author": "Steven Rugg",
   "license": "ISC",
-  "description": "",
+  "description": "WebRTC implementation of text and video chat application using socket.io as the signaling channel.",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "ejs": "^3.1.10",
