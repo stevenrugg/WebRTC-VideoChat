@@ -1,0 +1,90 @@
+/* Resetting styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .container {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: 100vh;
+    padding: 15px;
+  }
+  
+  /* Chat section */
+  .chat-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    border-right: 2px solid #ddd;
+    overflow: hidden;
+  }
+  
+  .chat-window {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .message-input {
+    display: flex;
+    gap: 5px;
+  }
+
+  .message {
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+  }
+  
+  
+  .message-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .message-input button {
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .message-input button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Video section */
+  .video-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    overflow: hidden;
+  }
+  
+  #localVideo,
+  #remoteVideo {
+    width: 100%;
+    height: 50%;
+    background-color: black;
+  }
+  
