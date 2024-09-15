@@ -10,6 +10,36 @@
     display: flex;
     height: 100vh;
     overflow: hidden;
+    background-color: rgb(2, 6, 117);
+  
+  }
+
+  .landing-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .terms-box {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  .cta-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .cta-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
   }
   
   .container {
@@ -37,6 +67,7 @@
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
+    background-color: white;
   }
   
   .message-input {
@@ -48,7 +79,7 @@
     padding: 8px;
     margin-bottom: 5px;
     border-radius: 5px;
-    background-color: #f1f1f1;
+    background-color: #acc0da;
   }
   
   
@@ -79,6 +110,7 @@
     gap: 10px;
     padding: 10px;
     overflow: hidden;
+    border: 2px solid #ccc;
   }
   
   #localVideo,

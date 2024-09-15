@@ -9,12 +9,17 @@ const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const newButton = document.getElementById('newButton');
 
+
 // Local variables
 let localStream; // Holds the stream from the user's camera and microphone
 let peerConnection; // The RTCPeerConnection object that handles WebRTC connection
 let currentPeer; // Store the current connected peer's socket ID
 
-// WebRTC configuration object, including STUN servers
+// ---------------------------------------------------------------
+// WebRTC configuration objects, including STUN servers
+// ---------------------------------------------------------------
+
+
 const peerConnectionConfig = {
   iceServers: [
     { urls: ["stun:ws-turn2.xirsys.com"] },
@@ -27,8 +32,6 @@ const peerConnectionConfig = {
         "turn:ws-turn2.xirsys.com:3478?transport=udp",
         "turn:ws-turn2.xirsys.com:80?transport=tcp",
         "turn:ws-turn2.xirsys.com:3478?transport=tcp",
-        "turns:ws-turn2.xirsys.com:443?transport=tcp",
-        "turns:ws-turn2.xirsys.com:5349?transport=tcp",
       ],
     },
   ],
@@ -50,11 +53,35 @@ async function getLocalStream() {
 // Initialize the local stream on page load
 getLocalStream();
 
+
+// --------------------------------------------------
+// Chat room functions and event handlers
+// --------------------------------------------------
+
+// Clear the chat window
+function clearChat() {
+  const chatWindow = document.getElementById('chat');  // Ensure 'chat' is the correct ID of the chat window
+  chatWindow.innerHTML = ''; // Clear all chat messages
+}
+
 // Event listener for the "New" button to disconnect from the current chat and find a new peer
-newButton.addEventListener('click', () => {
-  disconnect();
-  socket.emit('find-new-peer'); // Request to find a new peer
+newButton.addEventListener('click', async () => {
+  if (confirmNewChat()) {  // Confirm the "Sure?" prompt before starting a new chat
+    socket.emit('leave-room');  // Notify server the user is leaving the current room
+    clearChat();  // Clear chat window before starting a new chat
+    setupPeerConnection();  // Connect to a new random user (assuming you have this function)
+  }
 });
+
+function confirmNewChat() {
+  if (newButton.innerText === 'New') {
+    newButton.innerText = 'Sure?';
+    return false;
+  } else {
+    newButton.innerText = 'New';
+    return true;
+  }
+}
 
 // Event listener for the "Send" button to send chat messages
 sendButton.addEventListener('click', () => {
@@ -62,7 +89,8 @@ sendButton.addEventListener('click', () => {
   if (message) {
     appendMessage('You', message); // Append message to the sender's chat window
     socket.emit('send-message', { message, to: currentPeer }); // Send the message to the current peer
-    messageInput.value = ''; // Clear the input
+    messageInput.value = ''; 
+    console.log('messenge sent')
   }
 });
 
@@ -72,10 +100,13 @@ function appendMessage(sender, message) {
   messageElement.classList.add('message');
   messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
   chatWindow.appendChild(messageElement);
-  chatWindow.scrollTop = chatWindow.scrollHeight; // Scroll to the latest message
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+  console.log('message appended') // Scroll to the latest message
 }
 
+// -----------------------------------------------------------
 // Socket event listeners
+// -----------------------------------------------------------
 
 // When connected to a new peer
 socket.on('connect-to-peer', (peerId) => {
@@ -119,8 +150,14 @@ socket.on('ice-candidate', async (candidate) => {
 
 // When receiving a chat message from a peer
 socket.on('receive-message', ({ message, from }) => {
-  appendMessage('Stranger', message); // Append the received message to the chat window
+  appendMessage('Stranger', message);
+  console.log('received & appended message') // Append the received message to the chat window
 });
+
+
+// -------------------------------------------------------
+// Peer Connection Setup
+// -------------------------------------------------------
 
 // Setup WebRTC peer connection and event listeners
 function setupPeerConnection() {
@@ -135,15 +172,20 @@ function setupPeerConnection() {
   // Add local stream to peer connection
   localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
 
+
   // Handle remote stream
   peerConnection.ontrack = (event) => {
-    remoteVideo.srcObject = event.streams[0]; // Display the remote stream
+    if (remoteVideo.srcObject !== event.streams[0]) {
+      remoteVideo.srcObject = event.streams[0];
+      console.log('Remote track received');
+    }
   };
 
   // Handle ICE candidate gathering
   peerConnection.onicecandidate = (event) => {
     if (event.candidate) {
       socket.emit('ice-candidate', { candidate: event.candidate, to: currentPeer });
+      console.log('Got ice candidate')
     }
   };
 
@@ -163,7 +205,7 @@ function setupPeerConnection() {
 // Create an offer to initiate the connection with the peer
 async function createAndSendOffer() {
   try {
-    const offer = await peerConnection.createOffer();
+    const offer = peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     socket.emit('offer', { offer: peerConnection.localDescription, to: currentPeer });
   } catch (error) {
