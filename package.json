@@ -7,10 +7,10 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "keywords": ["webRTC", "socket.io", "videochat", "webcam", "chat", "peer-to-peer"  ],
-  "author": "Steven Rugg",
-  "license": "MIT",
-  "description": "Video and text chat application using WebRTC and socket.io for signaling. ",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "ejs": "^3.1.10",
