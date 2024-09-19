@@ -1,0 +1,35 @@
+name: Deploy to GitHub Pages
+
+
+
+on:
+
+  push: 
+
+    branches: [ main ]
+
+
+
+jobs:
+
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - run: npm install
+
+      - run: npm run build && npx webpack  # Run your Webpack build command
+              
+
+
+
+
+      - uses: actions/deploy-pages@v3
+
+        with:
+
+          folder: dist  # Specify the "dist" folder to deploy [1, 2, 3] 
